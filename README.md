@@ -1,73 +1,157 @@
-# Welcome to your Lovable project
+# Art Institute of Chicago - Artwork Browser
 
-## Project info
+A React + TypeScript application that displays artwork data from the Art Institute of Chicago API using PrimeReact DataTable with server-side pagination and persistent multi-page selection.
 
-**URL**: https://lovable.dev/projects/96cdb24a-7399-475f-8e85-19c0903f19e2
+## 🌐 Live Demo
 
-## How can I edit this code?
+- **Deployed Site**: [Your deployed URL will go here]
+- **GitHub Repository**: [Your GitHub repo URL will go here]
 
-There are several ways of editing your application.
+## ✨ Features
 
-**Use Lovable**
+- **Server-side Pagination**: Fetches data on-demand from the API (no caching)
+- **Multi-page Selection**: Select artworks across different pages with persistent selection
+- **Custom Selection Panel**: View and manage all selected items from any page
+- **Responsive DataTable**: Professional table interface powered by PrimeReact
+- **TypeScript Models**: Full type safety for API responses and UI components
+- **Loading States**: Visual feedback during data fetching
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/96cdb24a-7399-475f-8e85-19c0903f19e2) and start prompting.
+## 🚀 Quick Start
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
 
-**Use your preferred IDE**
+- Node.js (v18 or higher)
+- npm or yarn
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Installation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+```bash
+# Clone the repository
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
+# Navigate to the project directory
 cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The application will be available at `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 📋 Acceptance Criteria Verification
 
-**Use GitHub Codespaces**
+✅ **Page 1 auto-loads on initial render**
+- The application automatically fetches and displays page 1 data when loaded
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+✅ **Pagination always triggers network requests**
+- Every page change makes a fresh API call to `https://api.artic.edu/api/v1/artworks?page={page}`
+- No caching mechanism is implemented - verified in browser DevTools Network tab
 
-## What technologies are used for this project?
+✅ **Selection persists across pages**
+- Selected artwork IDs and minimal metadata are stored in component state
+- Selections are maintained when navigating between pages
+- Only selected IDs + minimal metadata (title, artist) are stored - no full-page data caching
 
-This project is built with:
+✅ **Select all on page affects only visible page**
+- The checkbox in the header selects/deselects only the current page's rows
+- Does not affect selections from other pages
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+✅ **Custom selection panel**
+- Displays all selected items across all pages
+- Allows individual deselection via remove button
+- "Clear All" button removes all selections at once
 
-## How can I deploy this project?
+✅ **Required columns displayed**
+- title
+- place_of_origin
+- artist_display
+- inscriptions
+- date_start
+- date_end
 
-Simply open [Lovable](https://lovable.dev/projects/96cdb24a-7399-475f-8e85-19c0903f19e2) and click on Share -> Publish.
+✅ **Loading state and total records**
+- Loading spinner shown during API requests
+- Total records count displayed below the table
 
-## Can I connect a custom domain to my Lovable project?
+## 🛠 Technology Stack
 
-Yes, you can!
+- **Frontend Framework**: React 18 with TypeScript
+- **Build Tool**: Vite
+- **UI Components**: PrimeReact DataTable
+- **Styling**: Tailwind CSS + shadcn/ui
+- **API**: Art Institute of Chicago Public API
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 📦 Deployment
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+This project is configured for deployment to Netlify or Cloudflare Pages.
+
+### Netlify
+
+```bash
+# Build the project
+npm run build
+
+# The dist/ folder contains the production build
+```
+
+Deploy the `dist` folder to Netlify via:
+- Netlify CLI: `netlify deploy --prod`
+- Netlify UI: Drag and drop the `dist` folder
+- GitHub integration: Connect your repo and auto-deploy on push
+
+### Cloudflare Pages
+
+```bash
+# Build the project
+npm run build
+```
+
+Deploy via Cloudflare Pages:
+- Connect your GitHub repository
+- Set build command: `npm run build`
+- Set output directory: `dist`
+
+## 📝 Project Structure
+
+```
+src/
+├── components/
+│   ├── ArtworkTable.tsx       # Main table component with pagination
+│   ├── SelectionPanel.tsx     # Selected items panel
+│   └── ui/                    # shadcn/ui components
+├── services/
+│   └── artworkService.ts      # API service layer
+├── types/
+│   └── artwork.ts             # TypeScript interfaces
+└── pages/
+    └── Index.tsx              # Main page
+```
+
+## 🔍 API Details
+
+**Base URL**: `https://api.artic.edu/api/v1/artworks`
+
+**Query Parameters**:
+- `page`: Page number (starts at 1)
+- `limit`: Items per page (default: 10)
+
+**Response Structure**:
+```typescript
+{
+  pagination: {
+    total: number,
+    limit: number,
+    offset: number,
+    total_pages: number,
+    current_page: number
+  },
+  data: Artwork[]
+}
+```
+
+## 📄 License
+
+This project was built with [Lovable](https://lovable.dev) and is open source.
