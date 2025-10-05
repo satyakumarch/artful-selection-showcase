@@ -159,6 +159,9 @@ export const ArtworkTable = () => {
           dataKey="id"
           selectionMode="multiple"
           stripedRows
+          showGridlines
+          filterDisplay={undefined}
+          globalFilterFields={undefined}
           className="artwork-table"
         >
           <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} />
